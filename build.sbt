@@ -6,13 +6,13 @@ organization := "net.jcazevedo"
 
 version := "0.2"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.10.6"
 
 libraryDependencies ++= Seq(
-  "com.github.nscala-time" %% "nscala-time"   % "2.2.0",
-  "org.scala-lang"          % "scala-reflect" % "2.11.7",
-  "org.yaml"                % "snakeyaml"     % "1.16",
-  "org.specs2"             %% "specs2-core"   % "3.6.5"  % "test")
+  "com.github.nscala-time" %% "nscala-time" % "2.2.0",
+  "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+  "org.yaml" % "snakeyaml" % "1.16",
+  "org.specs2" %% "specs2-core" % "3.6.5" % "test")
 
 scalacOptions ++= Seq(
   "-deprecation",
@@ -33,7 +33,7 @@ publishTo <<= version { v =>
   if (v.trim.endsWith("SNAPSHOT"))
     Some("snapshots" at nexus + "content/repositories/snapshots")
   else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
 publishArtifact in Test := false
@@ -50,10 +50,10 @@ pomExtra := (
     <url>git@github.com:jcazevedo/moultingyaml.git</url>
     <connection>scm:git:git@github.com:jcazevedo/moultingyaml.git</connection>
   </scm>
-  <developers>
-    <developer>
-      <id>jcazevedo</id>
-      <name>Joao Azevedo</name>
-      <url>http://jcazevedo.net</url>
-    </developer>
-  </developers>)
+    <developers>
+      <developer>
+        <id>jcazevedo</id>
+        <name>Joao Azevedo</name>
+        <url>http://jcazevedo.net</url>
+      </developer>
+    </developers>)

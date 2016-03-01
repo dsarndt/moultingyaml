@@ -4,20 +4,32 @@ import org.specs2.mutable._
 
 class ProductFormatsSpec extends Specification {
 
+  object T {
+
+    case class Test3[A, B](as: List[A], bs: List[B])
+
+  }
+
+  import T._
+
   case class Test0()
+
   case class Test2(a: Int, b: Option[Double])
-  case class Test3[A, B](as: List[A], bs: List[B])
+
   case class Test4(t2: Test2)
+
   case class Test5(a1: Int, a2: Int, a3: Int, a4: Int, a5: Int, a6: Int,
                    a7: Int, a8: Int, a9: Int, a10: Int, a11: Int, a12: Int,
                    a13: Int, a14: Int, a15: Int, a16: Int, a17: Int, a18: Int,
                    a19: Int, a20: Int, a21: Int, a22: Int)
+
   case class TestTransient(a: Int, b: Option[Double]) {
     @transient var c = false
   }
 
   @SerialVersionUID(1L) // SerialVersionUID adds a static field to the case class
   case class TestStatic(a: Int, b: Option[Double])
+
   case class TestMangled(`foo-bar!`: Int, `User ID`: String,
                          `ü$bavf$u56ú$`: Boolean, `-x-`: Int,
                          `=><+-*/!@#%^&~?|`: Float)
@@ -25,8 +37,10 @@ class ProductFormatsSpec extends Specification {
   trait TestProtocol extends DefaultYamlProtocol {
     implicit val test0Format = yamlFormat0(Test0)
     implicit val test2Format = yamlFormat2(Test2)
+
     implicit def test3Format[A: YamlFormat, B: YamlFormat] =
       yamlFormat2(Test3.apply[A, B])
+
     implicit val test4Format = yamlFormat1(Test4)
     implicit val test5Format = yamlFormat22(Test5)
     implicit val testTransientFormat = yamlFormat2(TestTransient)
@@ -35,6 +49,7 @@ class ProductFormatsSpec extends Specification {
   }
 
   object TestProtocol extends TestProtocol
+
   import TestProtocol._
 
   "A YamlFormat created with `yamlFormat`, for a case class with 2 elements," should {
@@ -120,7 +135,7 @@ class ProductFormatsSpec extends Specification {
     }
 
     "convert a YamlObject to the respective case class instance" in {
-      yaml.convertTo[Test3[Int, String]] mustEqual obj
+      yaml.convertTo[Test3[Int, String]] must be equalTo (obj)
     }
   }
 
@@ -232,7 +247,7 @@ class ProductFormatsSpec extends Specification {
       YamlString("a22") -> YamlNumber(22))
 
     "convert to a respective YamlObject" in {
-      obj.toYaml mustEqual yaml
+      obj.toYaml must be equalTo yaml
     }
 
     "convert a YamlObject to the respective case class instance" in {
